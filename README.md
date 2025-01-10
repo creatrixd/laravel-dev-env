@@ -1,4 +1,4 @@
-# Llcrm development environment
+# Laravel development environment
 # Руководство к использованию
 
 ### Окружение создано с целью упрощения запуска и разработки приложения на локальном компьютере.
