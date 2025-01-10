@@ -18,11 +18,17 @@ RUN apt update && apt install -y --no-install-recommends \
     libzip-dev \
     supervisor \
     fish \ 
+    nano \
     sqlite3 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 RUN update-ca-certificates
+
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
+    && apt install -y nodejs \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY supervisord.conf /etc/supervisor/supervisord.conf
