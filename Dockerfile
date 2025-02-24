@@ -12,23 +12,23 @@ RUN curl -sSLo /usr/share/keyrings/deb.sury.org-php.gpg https://packages.sury.or
 
 
 RUN apt update && apt install -y --no-install-recommends \
-    php8.3 \
-    php8.3-fpm \
-    php8.3-pdo \
-    php8.3-pdo-sqlite \
-    php8.3-pdo-mysql \
-    php8.3-zip \
-    php8.3-mbstring \
-    php8.3-curl \
-    php8.3-cli \
-    php8.3-xml \
-    php8.3-bcmath \
-    php8.3-intl \
-    php8.3-gd \
-    php8.3-mysqli \
-    php8.3-soap \
-    php8.3-xmlrpc \
-    php8.3-opcache \
+    php8.4 \
+    php8.4-fpm \
+    php8.4-pdo \
+    php8.4-pdo-sqlite \
+    php8.4-pdo-mysql \
+    php8.4-zip \
+    php8.4-mbstring \
+    php8.4-curl \
+    php8.4-cli \
+    php8.4-xml \
+    php8.4-bcmath \
+    php8.4-intl \
+    php8.4-gd \
+    php8.4-mysqli \
+    php8.4-soap \
+    php8.4-xmlrpc \
+    php8.4-opcache \
     nginx \
     git \
     supervisor \
