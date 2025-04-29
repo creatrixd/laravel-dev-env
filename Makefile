@@ -1,7 +1,7 @@
 # Стандартное имя контейнера
-CONTAINER_NAME = llcrm-dev-container
+CONTAINER_NAME = laravel-dev-container
 # Стандартное имя образа контейнера
-IMAGE_NAME = llcrm-dev-image
+IMAGE_NAME = laravel-dev-image
 
 # Стандартные параметры для проброса портов
 PORTS = 8080:80
