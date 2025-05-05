@@ -7,17 +7,17 @@ install_make() {
         return
     fi
     if command -v apt-get > /dev/null; then
-            echo "Installing make with apt-get..."
+        echo "Installing make with apt-get..."
         sudo apt-get update
-            sudo apt-get install -y make
+        sudo apt-get install -y make
     elif command -v yum > /dev/null; then
-            echo "Installing make with yum..."
-            sudo yum install -y make
+        echo "Installing make with yum..."
+        sudo yum install -y make
     elif command -v dnf > /dev/null; then
-            echo "Installing make with dnf..."
-            sudo dnf install -y make
+        echo "Installing make with dnf..."
+        sudo dnf install -y make
     elif command -v pacman > /dev/null; then
-            echo "Installing make with pacman..."
+        echo "Installing make with pacman..."
         sudo pacman -S --noconfirm make
     else
         echo "No supported package managers found"
@@ -26,15 +26,33 @@ install_make() {
     fi
 }
 
-echo -n "Start installation? (y/*): "
-read suggest
+add_user_to_docker() {
+    CURRENT_USER=$(id -un)
+    echo -n "Add user $CURRENT_USER to docker group (if you want to work with docker without using sudo and typing your password)? (y/*): "
+    read suggest
 
-if [ "$suggest" = "y" ]; then
+    if [ "$suggest" = "y" ]; then
+        if getent group docker >/dev/null 2>&1; then
+	        echo "Docker group has already been created"
+        else
+            echo "Creating docker group"
+            sudo groupadd docker
+            if [ $? -ne 0 ]; then
+                echo "Error while creating docker group"
+            fi
+        fi
+        echo "Adding $CURRENT_USER to docker group"
+        sudo usermod -aG docker "$CURRENT_USER"
+        if [ $? -eq 0 ]; then
+            echo "User $CURRENT_USER was successfully added to docker group"
+            echo "WARNING: to use docker without sudo you need to do logout and login again"
+        else
+            echo "Error while adding $CURRENT_USER to docker group"
+        fi
+    fi
+}
 
-    echo "Cleaning old docker installations..."
-
-    for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done
-
+install_docker() {
     echo "Checking and updating repositories..."
 
     sudo apt-get update
@@ -53,13 +71,44 @@ if [ "$suggest" = "y" ]; then
 
     sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
+    echo "Finishing docker installation..."
+
+    add_user_to_docker
+}
+
+start_docker_installation() {
+    if command -v docker >/dev/null 2>&1; then
+        echo -n "Docker is already installed, reinstall it? (y/*): "
+        read suggest
+
+        if [ "$suggest" = "y" ]; then
+            install_docker
+        else
+            echo "Skipping docker reinstallation"
+        fi
+    else
+	    install_docker
+    fi
+}
+
+prepare_env_root() {
     mkdir project/
     echo "Created project root folder..."
+}
 
+entrypoint() {
+    echo -n "Start installation? (y/*): "
+    read suggest
+
+    if [ "$suggest" = "y" ]; then
+	prepare_env_root
     install_make
+	start_docker_installation
+        echo "Installation finished"
+        echo "Check ./README.md for info"
+    else
+        echo "Installation canceled. Bye."
+    fi
+}
 
-    echo "Installation finished"
-    echo "Check ./README.md for info"
-else
-   echo "Installation canceled. Bye."
-fi
+entrypoint
